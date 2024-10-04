@@ -50,3 +50,56 @@ public:
 		return str.substr(index, length);
 	}
 };
+
+class Solution {
+public:
+	string longestPalindrome(string s) {
+
+		vector<vector<int>> dp(s.size(), vector<int>(s.size()));
+
+
+		string ret;
+
+		int max = INT_MIN;
+
+		for (int i = 0; i < s.size(); i++)
+		{
+			dp[i][i] = 1;
+
+			ret = s.substr(i, 1);
+			
+			max = 1;
+
+			if (i < s.size() - 1)
+			{
+				if (s[i] == s[i + 1])
+				{
+					dp[i][i + 1] = 2;
+					ret = s.substr(i, 2);
+					max = 2;
+				}
+			}
+		}
+
+
+		for (int si = 0; si < s.size(); si++)
+		{
+			for (int ei = si + 2; ei < s.size(); ei++)
+			{
+				if (s[si] == s[ei] && s[si + 1] == s[ei - 1])
+				{
+					dp[si][ei] = dp[si + 1][ei - 1] + 1;
+
+					if (max < ei - si + 1)
+					{
+						max = ei - si + 1;
+						ret = s.substr(si, ei - si + 1);
+					}
+				}
+				
+			}
+		}
+
+		return ret;
+	}
+};
