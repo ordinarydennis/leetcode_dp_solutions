@@ -90,3 +90,29 @@ public:
 
 	}
 };
+
+class Solution {
+public:
+	bool canJump(vector<int>& nums) {
+
+		vector<bool> memo(nums.size());
+
+		memo[nums.size() - 1] = true;
+
+		for (int i = nums.size() - 2; 0 <= i; i--)
+		{
+			int maxdist = std::min(i + nums[i], static_cast<int>(nums.size() - 1));
+
+			for (int d = i + 1; d <= maxdist; d++)
+			{
+				if (memo[d])
+				{
+					memo[i] = true;
+					break;
+				}
+			}
+		}
+
+		return memo[0];
+	}
+};
