@@ -101,3 +101,41 @@ public:
 		return dp[maxIndex] - dp[minIndex];
 	}
 };
+
+
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		vector<int> dp(nums.size());
+
+		dp[0] = nums[0];
+
+		int ret = dp[0];
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+			ret = max(ret, dp[i]);
+		}
+	
+		return ret;
+	}
+};
+
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		int curSum = nums[0];
+		int ret = nums[0];
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			curSum = max(curSum + nums[i], nums[i]);
+			ret = max(ret, curSum);
+		}
+
+		return ret;
+	}
+};
