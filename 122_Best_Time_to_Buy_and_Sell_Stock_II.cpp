@@ -114,15 +114,55 @@ private:
 			
 			int maxprofit = 0;
 			
-			for (int i = start + 1; i < prices.size(); i++) {
-				if (prices[start] < prices[i]) {
-					int profit =
-						calculate(prices, i + 1) + prices[i] - prices[start];
+			for (int i = start + 1; i < prices.size(); i++)
+			{
+				if (prices[start] < prices[i])
+				{
+					int profit = calculate(prices, i + 1) + prices[i] - prices[start];
 					if (profit > maxprofit) maxprofit = profit;
 				}
 			}
 			if (maxprofit > max) max = maxprofit;
 		}
 		return max;
+	}
+};
+
+
+
+class Solution {
+
+	int dfs(int s, vector<int>& prices)
+	{
+		if (prices.size() <= s)
+		{
+			return 0;
+		}
+
+		int max = 0;
+
+		for (int start = s; start < prices.size(); start++)
+		{
+			int maxprofit = 0;
+
+			for (int i = start + 1; i < prices.size(); i++)
+			{
+				if (prices[start] < prices[i])
+				{
+					int profit = dfs(i + 1, prices) + prices[i] - prices[start];
+					maxprofit = std::max(maxprofit, profit);
+				}
+			}
+
+			if (maxprofit > max) max = maxprofit;
+		}
+
+		return max;
+	}
+
+public:
+	int maxProfit(vector<int>& prices)
+	{
+		return dfs(0, prices);
 	}
 };
