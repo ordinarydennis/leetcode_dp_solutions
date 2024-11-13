@@ -50,53 +50,44 @@ public:
 
 
 class Solution {
+public:
+	vector<int> memo;
+	vector<string> wordDict;
+	string s;
 
-	bool dfs(int i, string& s, std::unordered_map<char, vector<string>>& m)
+	bool wordBreak(string s, vector<string>& wordDict) {
+		memo = vector(s.length(), -1);
+		this->wordDict = wordDict;
+		this->s = s;
+		return dp(0);
+	}
+
+	bool dp(int i)
 	{
-		auto it = m.find(s[i]);
-		if (m.end() == it)
-		{
-			return false;
-		}
-
 		if (s.size() <= i)
-		{
 			return true;
+
+		if (memo[i] != -1) {
+			return memo[i] == 1;
 		}
 
-		for (auto& str : it->second)
+		for (string word : wordDict)
 		{
-			auto sub = s.substr(i, str.size());
+			int currSize = word.length();
 
-			if (sub == str)
-			{
-				if (s.size() == i + str.size())
-				{
-					return true;
-				}
-
-				if (dfs(i + s.size(), s, m))
-				{
-					return true;
-				}
+			if (s.size() < i + currSize) {
+				continue;
 			}
 
+			if (s.substr(i, currSize) == word &&
+				dp(i + currSize)) {
+				memo[i] = 1;
+				return true;
+			}
 		}
-		
+
+		memo[i] = 0;
 		return false;
 	}
-
-
-public:
-	bool wordBreak(string s, vector<string>& wordDict) {
-
-		std::unordered_map<char, vector<string>> m;
-
-		for (string& str : wordDict)
-		{
-			m[str[0]].push_back(str);
-		}
-
-		return dfs(0, s, m);
-	}
 };
+
