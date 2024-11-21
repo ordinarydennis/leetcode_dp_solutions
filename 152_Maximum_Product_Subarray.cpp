@@ -106,3 +106,33 @@ public:
 		return result;
 	}
 };
+
+class Solution {
+public:
+	int maxProduct(vector<int>& nums) {
+
+		int max_so_far = nums[0];
+		int min_so_far = nums[0];
+		int ret = nums[0];
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			int cur = nums[i];
+			
+			int temp = std::max(cur,
+				std::max(max_so_far * cur, min_so_far * cur)
+			);
+
+			min_so_far = std::min(cur,
+				std::min(max_so_far * cur, min_so_far * cur)
+			);
+
+			max_so_far = temp;
+
+			ret = max(ret, max_so_far);
+		}
+
+		return ret;
+
+	}
+};
