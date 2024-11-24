@@ -26,3 +26,21 @@ public:
 
 	}
 };
+
+
+class Solution {
+public:
+	int rob(vector<int>& nums) {
+
+		int n1 = nums[nums.size() - 1], n2 = 0;
+
+		for (int i = nums.size() - 2; 0 <= i; i--)
+		{
+			int temp = n1;
+			n1 = max(n1, nums[i] + n2);
+			n2 = temp;
+		}
+
+		return n1;
+	}
+};
