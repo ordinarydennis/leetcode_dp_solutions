@@ -136,3 +136,72 @@ public:
 
 	}
 };
+
+
+//Brute force TLE
+class Solution {
+public:
+	int maxProduct(vector<int>& nums) {
+
+		int ret = INT_MIN;
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			int pro = 1;
+
+			for (int a = i; a < nums.size(); a++)
+			{
+				pro *= nums[a];
+				ret = max(ret, pro);
+			}
+		}
+
+		return ret;
+	}
+};
+
+
+class Solution {
+public:
+	int maxProduct(vector<int>& nums) {
+
+		int min_so_far = nums[0];
+		int max_so_far = nums[0];
+	
+		int ret = max_so_far;
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			int temp = max(
+				nums[i],
+				max(
+					nums[i] * max_so_far,
+					nums[i] * min_so_far
+				)
+			);
+
+			min_so_far = min(
+				nums[i],
+				min(
+					min_so_far * nums[i],
+					max_so_far * nums[i]
+				)
+			);
+
+			max_so_far = temp;
+			
+			ret = max(ret, max_so_far);
+		}
+
+		return ret;
+	}
+};
+
+//single negative number
+//from first to before negative number or from after negative number to last number.
+
+//two negative number 
+//product of all numbers
+
+//no negative numbers
+//product of all numbers
