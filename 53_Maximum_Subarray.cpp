@@ -66,7 +66,7 @@ public:
 	}
 };
 
-
+//fail
 class Solution {
 public:
 	int maxSubArray(vector<int>& nums) {
@@ -132,8 +132,133 @@ public:
 
 		for (int i = 1; i < nums.size(); i++)
 		{
+			//If there are consecutive negative numbers, nums[i] will become cursum.
 			curSum = max(curSum + nums[i], nums[i]);
 			ret = max(ret, curSum);
+		}
+
+		return ret;
+	}
+};
+
+
+//fail
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		vector<vector<int>> dp(nums.size(), vector<int>(nums.size()));
+
+		int max = INT_MIN;
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			dp[i][i] = nums[i];
+
+			max = std::max(max, dp[i][i]);
+
+			if (i < nums.size() - 1)
+			{
+				dp[i][i + 1] = nums[i] + nums[i + 1];
+				max = std::max(max, dp[i][i + 1]);
+			}
+		}
+		
+	
+		for (int size = 3; size <= nums.size(); size++)
+		{
+			for (int i = 0; i <= nums.size() - size; i++)
+			{
+				dp[i][i + size - 1] = dp[i + 1][i + size - 2] + nums[i] + nums[i + size - 1];
+				max = std::max(max, dp[i][i + size - 1]);
+			}
+		}
+
+
+		return max;
+	}
+};
+
+//fail
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		vector<int> dp(nums.size());
+
+		int max = INT_MIN;
+		for (int i = 0; i < nums.size(); i++)
+		{
+			dp[i] = nums[i];
+			max = std::max(max, dp[i]);
+		}
+
+		for (int size = 2; size <= nums.size(); size++)
+		{
+			for (int i = 0; i <= nums.size() - size; i++)
+			{
+				dp[i] = dp[i] + nums[i + size - 1]);
+				max = std::max(max, dp[i]);
+			}
+		}
+
+
+		for (int i = 0; i < dp.size(); i++)
+		{
+			cout << dp[i] << " ";
+		}
+
+		return dp[0];
+	}
+};
+
+
+
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		int cur = nums[0];
+		int ret = cur;
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			cur = max(cur + nums[i], nums[i]);
+			ret = max(ret, cur);
+		}
+
+		return ret;
+	}
+};
+
+
+class Solution {
+public:
+	int maxSubArray(vector<int>& nums) {
+
+		vector<int> dp(nums.size());
+
+		dp[0] = nums[0];
+
+		int ret = dp[0];
+
+		for (int i = 1; i < nums.size(); i++)
+		{
+			//logic error 
+			//if (dp[i - 1] <= dp[i - 1] + nums[i])
+			//{
+			//	dp[i] = dp[i - 1] + nums[i];
+			//}
+			//else
+			//{
+			//	dp[i] = nums[i];
+			//}
+
+			//because we need to get consicutive sum, we sum dp and nums[i] or not.
+			//when nagative numbers appear consecutively, use nums[i] 
+			dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+			
+			ret = max(ret, dp[i]);
 		}
 
 		return ret;
