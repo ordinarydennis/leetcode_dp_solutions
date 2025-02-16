@@ -215,3 +215,43 @@ public:
 		return s.substr(i, j - i + 1);
 	}
 };
+
+class Solution {
+public:
+	string longestPalindrome(string s) {
+
+		vector<vector<int>> dp(s.size(), vector<int>(s.size()));
+
+		int max = 1;
+		int begin = 0;
+
+		for (int a = 0; a < s.size(); a++)
+		{
+			dp[a][a] = 1;
+
+			if (a < s.size() - 1 && s[a] == s[a + 1])
+			{
+				dp[a][a + 1] = 2;
+				max = 2;
+				begin = a;
+			}
+		}
+
+		for (int size = 3; size <= s.size(); size++)
+		{
+			for (int i = 0; i <= s.size() - size; i++)
+			{
+				if (s[i] == s[i + size - 1] && 1 <= dp[i + 1][i + size - 2])
+				{
+					dp[i][i + size - 1] = dp[i + 1][i + size - 2] + 2;
+					max = size;
+					begin = i;
+				}	
+			}
+		}
+
+		return s.substr(begin, max);
+	}
+};
+
+
